@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
+import FeedForm from "./FeedForm";
 
 function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
+  const [feedbackBoxName, setFeedbackBoxName] = useState("");
 
   const handleOpenModal = () => {
+    setFeedbackBoxName("")
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setFeedbackBoxName("")
+  };
+
+  const handleCreate = () => {
+    setIsModalOpen(false);
+    setIsSecondModalOpen(true);
+    
+  };
+
+  const handleCloseSecondModal = () => {
+    setIsSecondModalOpen(false);
   };
 
   return (
@@ -21,33 +36,53 @@ function Dashboard() {
         <FaPlus className="text-black absolute text-4xl top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
       </div>
 
-     {isModalOpen && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-    <div className="bg-white p-6 rounded-lg shadow-lg relative">
-      <h2 className="text-xl font-bold mb-4">Enter feedback box name</h2>
-      <input
-        type="text"
-        placeholder="Feedback Box Name"
-        className="border border-gray-300 rounded-lg px-4 py-2 w-full mb-4"
-      />
-      <div className="flex justify-end space-x-4">
-        <button
-          onClick={handleCloseModal}
-          className="bg-gray-500 text-white px-4 py-2 rounded-lg"
-        >
-          Close
-        </button>
-        <button
-          onClick={()=>console.log("clicked")}
-          className="bg-black text-white px-4 py-2 rounded-lg"
-        >
-          Submit
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg relative">
+            <h2 className="text-xl font-bold mb-4">Enter feedback box name</h2>
+            <input
+              type="text"
+              placeholder="Feedback Box Name"
+              value={feedbackBoxName}
+              onChange={(e) => setFeedbackBoxName(e.target.value)}
+              className="border border-gray-300 rounded-lg px-4 py-2 w-full mb-4"
+            />
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={handleCloseModal}
+                className="bg-gray-500 text-white px-4 py-2 rounded-lg"
+              >
+                Close
+              </button>
+              {feedbackBoxName.length > 3?
+              <button
+              onClick={handleCreate}
+              className="bg-black text-white px-4 py-2 rounded-lg"
+            >
+              Create
+            </button> :''}
+              
+            </div>
+          </div>
+        </div>
+      )}
 
+      {isSecondModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg relative">
+            <h2 className="text-xl font-bold mb-4">{feedbackBoxName}</h2>
+            <div className="flex justify-end space-x-4">
+              <FeedForm feedbackBoxName={feedbackBoxName}/>
+              <button
+                onClick={handleCloseSecondModal}
+                className="bg-gray-500 text-white px-4 py-2 rounded-lg"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
