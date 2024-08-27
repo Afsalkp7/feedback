@@ -1,30 +1,27 @@
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
-import FeedForm from "./FeedForm";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
   const [feedbackBoxName, setFeedbackBoxName] = useState("");
+  const navigate = useNavigate();
 
   const handleOpenModal = () => {
-    setFeedbackBoxName("")
+    setFeedbackBoxName("");
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setFeedbackBoxName("")
+    setFeedbackBoxName("");
   };
 
   const handleCreate = () => {
     setIsModalOpen(false);
-    setIsSecondModalOpen(true);
-    
-  };
-
-  const handleCloseSecondModal = () => {
-    setIsSecondModalOpen(false);
+    if (feedbackBoxName.length > 3) {
+      navigate(`/addFeed/${feedbackBoxName}`);
+    }
   };
 
   return (
@@ -54,31 +51,14 @@ function Dashboard() {
               >
                 Close
               </button>
-              {feedbackBoxName.length > 3?
-              <button
-              onClick={handleCreate}
-              className="bg-black text-white px-4 py-2 rounded-lg"
-            >
-              Create
-            </button> :''}
-              
-            </div>
-          </div>
-        </div>
-      )}
-
-      {isSecondModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg relative">
-            <h2 className="text-xl font-bold mb-4">{feedbackBoxName}</h2>
-            <div className="flex justify-end space-x-4">
-              <FeedForm feedbackBoxName={feedbackBoxName}/>
-              <button
-                onClick={handleCloseSecondModal}
-                className="bg-gray-500 text-white px-4 py-2 rounded-lg"
-              >
-                Close
-              </button>
+              {feedbackBoxName.length > 3 && (
+                <button
+                  onClick={handleCreate}
+                  className="bg-black text-white px-4 py-2 rounded-lg"
+                >
+                  Create
+                </button>
+              )}
             </div>
           </div>
         </div>

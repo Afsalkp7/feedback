@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/user/Home'
 import Layout from './components/layout/Layout';
 import Dashboard from './components/admin/Dashboard';
+import FormBuilder from './components/admin/FeedForm';
 
 function App() {
 
@@ -15,7 +16,7 @@ function App() {
           <Route
             path="/"
             element={
-                <Home />
+              <Home />
             }
           />
           <Route
@@ -24,6 +25,11 @@ function App() {
                 <Dashboard />
             }
           />
+          <Route 
+            path='/addFeed/:feedbackBoxName'
+            element={
+              <FormBuilder />
+            } />
         </Route>
       </Routes>
     </Router>
