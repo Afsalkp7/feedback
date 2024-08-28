@@ -132,7 +132,7 @@ function Feed() {
       {filteredFeeds.map((feed, index) => (
         <div
           key={index}
-          className="cursor-pointer shadow-lg h-[200px] w-[200px] mt-10 bg-slate-100 rounded-lg relative"
+          className="cursor-pointer shadow-lg h-[200px] w-[200px] mt-10 bg-black rounded-lg relative text-slate-100"
         >
           <div className="flex items-center ms-6 mt-2 min-h-16">
             <FaHandPointRight className="mr-2 text-xl" />
@@ -140,7 +140,7 @@ function Feed() {
           </div>
           <button
             onClick={() => handleRespondClick(feed)}
-            className="absolute bottom-2 right-2 px-4 py-2 bg-blue-500 text-white rounded-lg"
+            className="absolute bottom-2 right-2 px-4 py-2 bg-slate-100 text-black rounded-lg"
           >
             Respond
           </button>

@@ -1,12 +1,16 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function Home() {
   return (
-    <div className='w-screen flex justify-around items-center px-4 sm:px-10 md:px-20 lg:px-40 flex-wrap'>
-        <div className="">
-            <img className='w-1/3 h-auto' src='https://static.vecteezy.com/system/resources/previews/021/082/533/original/writing-book-and-pencil-storytelling-and-education-concept-flat-cartoon-icon-illustration-vector.jpg' />
-        </div>
-        <div className="">yhg</div>
+    <div className="h-screen flex justify-center items-center">
+      <div className='text-center'>
+      <span className="text-6xl font-bold  px-4 sm:px-10 md:px-20 lg:px-40 ">Write feedbacks on random things</span><br />
+      <Link to="/feed" >
+      <button className='mt-5 px-10 py-3 text-white text-bold bg-black border-white rounded-xl'>Feeds</button>
+      </Link>
+      
+      </div>
     </div>
   )
 }

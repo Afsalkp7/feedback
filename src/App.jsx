@@ -22,7 +22,7 @@ function App() {
   
   
   return (
-    <div className="min-h-screen bg-blue-100 bg-fixed">
+    <div className="min-h-screen bg-slate-100 bg-fixed">
       <Router>
         <Routes>
           <Route path="/" element={<Layout />}>

@@ -9,7 +9,7 @@ function Navbar() {
   const isAdminOrAddFeedPage = location.pathname === '/admin' || location.pathname.startsWith('/addFeed');
 
   return (
-    <div className="fixed top-0 left-0 w-full bg-blue-100 shadow-lg z-50">
+    <div className="fixed top-0 left-0 w-full bg-slate-100 shadow-lg z-50">
       <div className="flex justify-between items-center px-4 sm:px-10 md:px-20 lg:px-40 flex-wrap">
         <div className="logo">
           <img className="w-20 sm:w-20" src={logo} alt="Logo" />
