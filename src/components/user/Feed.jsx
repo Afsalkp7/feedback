@@ -3,20 +3,25 @@ import { FaHandPointRight } from "react-icons/fa";
 
 function Feed() {
   const [feeds, setFeeds] = useState([]);
+  const [filteredFeeds, setFilteredFeeds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedFeed, setSelectedFeed] = useState(null);
   const [responses, setResponses] = useState({});
+  const [userFeedbacks, setUserFeedbacks] = useState([]);
 
   useEffect(() => {
     const fetchFeeds = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://localhost:5000/api/feed/feeds", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          "https://feedback-backend-ochre.vercel.app/api/feed/feeds",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch feeds");
         }
@@ -29,8 +34,53 @@ function Feed() {
       }
     };
 
+    const fetchUserFeedbacks = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(
+          "https://feedback-backend-ochre.vercel.app/api/feed/user/feedback",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch user feedbacks");
+        }
+        const data = await response.json();
+        // Assuming data is an array of feedback IDs
+        console.log(data);
+
+        setUserFeedbacks(data.feedbackIds); // Adjust if the structure is different
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
     fetchFeeds();
+    fetchUserFeedbacks();
   }, []);
+
+  useEffect(() => {
+    // Filter feeds based on user feedbacks
+    if (feeds.length && userFeedbacks.length) {
+        console.log("userFeedback",userFeedbacks);
+        console.log("feeds",feeds);
+        
+        
+        const filtered = feeds.filter(feed => 
+            !userFeedbacks.includes(feed.feedbackFormId)
+          );
+          console.log(filtered);
+          
+
+      setFilteredFeeds(filtered);
+    } else {
+      setFilteredFeeds(feeds);
+    }
+  }, [feeds, userFeedbacks]);
 
   const handleRespondClick = (feed) => {
     setSelectedFeed(feed);
@@ -45,26 +95,28 @@ function Feed() {
   };
 
   const handleSubmit = async () => {
-    
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5000/api/feed/review", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          feedbackFormId: selectedFeed.feedbackFormId,
-          responses: Object.entries(responses).map(([fieldId, response]) => ({
-            [fieldId]: response,
-          })),
-        }),
-      });
+      const response = await fetch(
+        "https://feedback-backend-ochre.vercel.app/api/feed/review",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            feedbackFormId: selectedFeed.feedbackFormId,
+            responses: Object.entries(responses).map(([fieldId, response]) => ({
+              [fieldId]: response,
+            })),
+          }),
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to submit responses");
       }
-      alert("Responses submitted successfully!");
+      setFilteredFeeds(filteredFeeds.filter(feed => feed.feedbackFormId !== selectedFeed.feedbackFormId));
       setSelectedFeed(null);
     } catch (err) {
       console.error("Error submitting responses:", err.message);
@@ -77,7 +129,7 @@ function Feed() {
 
   return (
     <div className="flex justify-center items-center px-4 sm:px-10 md:px-20 lg:px-40 flex-wrap gap-2 pt-16 z-0">
-      {feeds.map((feed, index) => (
+      {filteredFeeds.map((feed, index) => (
         <div
           key={index}
           className="cursor-pointer shadow-lg h-[200px] w-[200px] mt-10 bg-slate-100 rounded-lg relative"
@@ -111,7 +163,9 @@ function Feed() {
                         className="w-full border border-gray-300 p-2 rounded"
                         rows="4"
                         value={responses[field.field_id] || ""}
-                        onChange={(e) => handleResponseChange(e, field.field_id)}
+                        onChange={(e) =>
+                          handleResponseChange(e, field.field_id)
+                        }
                       />
                     )}
                     {field.fieldType === "SingleLineInput" && (
@@ -119,7 +173,9 @@ function Feed() {
                         type="text"
                         className="w-full border border-gray-300 p-2 rounded"
                         value={responses[field.field_id] || ""}
-                        onChange={(e) => handleResponseChange(e, field.field_id)}
+                        onChange={(e) =>
+                          handleResponseChange(e, field.field_id)
+                        }
                       />
                     )}
                     {field.fieldType === "NumericalRating" && (
@@ -127,7 +183,9 @@ function Feed() {
                         type="number"
                         className="w-full border border-gray-300 p-2 rounded"
                         value={responses[field.field_id] || ""}
-                        onChange={(e) => handleResponseChange(e, field.field_id)}
+                        onChange={(e) =>
+                          handleResponseChange(e, field.field_id)
+                        }
                       />
                     )}
                     {field.fieldType === "StarRating" && (
@@ -135,7 +193,9 @@ function Feed() {
                         type="number"
                         className="w-full border border-gray-300 p-2 rounded"
                         value={responses[field.field_id] || ""}
-                        onChange={(e) => handleResponseChange(e, field.field_id)}
+                        onChange={(e) =>
+                          handleResponseChange(e, field.field_id)
+                        }
                       />
                     )}
                     {field.fieldType === "SmileRating" && (
@@ -143,7 +203,9 @@ function Feed() {
                         type="number"
                         className="w-full border border-gray-300 p-2 rounded"
                         value={responses[field.field_id] || ""}
-                        onChange={(e) => handleResponseChange(e, field.field_id)}
+                        onChange={(e) =>
+                          handleResponseChange(e, field.field_id)
+                        }
                       />
                     )}
                     {field.fieldType === "RadioButtons" && (
@@ -156,7 +218,9 @@ function Feed() {
                               name={field.field_id}
                               value={option}
                               checked={responses[field.field_id] === option}
-                              onChange={(e) => handleResponseChange(e, field.field_id)}
+                              onChange={(e) =>
+                                handleResponseChange(e, field.field_id)
+                              }
                               className="mr-2"
                             />
                             <label

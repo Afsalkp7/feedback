@@ -93,7 +93,7 @@ const FormBuilder = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:5000/api/feed/add', payload);
+            const response = await axios.post('https://feedback-backend-ochre.vercel.app/api/feed/add', payload);
             message.success('Feedback form created successfully!');
             navigate(`/admin`);
             
