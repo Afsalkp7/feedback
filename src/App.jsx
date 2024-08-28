@@ -6,8 +6,21 @@ import Dashboard from "./components/admin/Dashboard";
 import FormBuilder from "./components/admin/FeedForm";
 import AuthForm from "./components/user/AuthForm";
 import PrivateRoute from "./components/user/PrivateRoute";
+import Feed from "./components/user/Feed";
 
 function App() {
+  const fieldsArray = [
+    { fieldType: "SingleLineInput", label: "Name" },
+    { fieldType: "TextArea", label: "Description" },
+    { fieldType: "NumericalRating", label: "Rating" },
+    {
+      fieldType: "RadioButtons",
+      label: "Options",
+      options: ["Option 1", "Option 2", "Option 3"],
+    },
+  ];
+  
+  
   return (
     <div className="min-h-screen bg-blue-100 bg-fixed">
       <Router>
@@ -19,6 +32,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Home />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/feed"
+              element={
+                <PrivateRoute>
+                  <Feed fields={fieldsArray}/>
                 </PrivateRoute>
               }
             />

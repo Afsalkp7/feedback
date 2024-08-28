@@ -24,7 +24,10 @@ function Navbar() {
             {!isAdminOrAddFeedPage && (
               <>
                 <li className="text-xl sm:text-xl md:text-2xl lg:text-2xl mt-2">
+                  <Link to={"/feed"} >
                   <RiQuillPenFill />
+                  </Link>
+                  
                 </li>
                 <li className="text-xl sm:text-xl md:text-2xl lg:text-2xl mt-2">
                   <FaUser />
